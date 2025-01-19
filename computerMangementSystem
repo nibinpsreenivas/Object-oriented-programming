@@ -1,0 +1,72 @@
+public class Computer {
+    // Class variables
+    private String brand;
+    private String processor;
+    private int ram;
+
+    // Constructor 1: Initialize brand, processor, and RAM
+    public Computer(String brand, String processor, int ram) {
+        this.brand = brand;
+        this.processor = processor;
+        this.ram = ram;
+    }
+
+    // Constructor 2: Initialize brand and processor, default RAM to 8
+    public Computer(String brand, String processor) {
+        this.brand = brand;
+        this.processor = processor;
+        this.ram = 8;
+    }
+
+    // Getter for RAM
+    public int getRam() {
+        return ram;
+    }
+
+    // Method to get computers with RAM greater than or equal to a given size
+    public static Computer[] getComputersWithRam(Computer[] computers, int minRam) {
+        // Count how many computers satisfy the condition
+        int count = 0;
+        for (Computer computer : computers) {
+            if (computer.getRam() >= minRam) {
+                count++;
+            }
+        }
+
+        // Create a new array for the filtered computers
+        Computer[] filteredComputers = new Computer[count];
+        int index = 0;
+        for (Computer computer : computers) {
+            if (computer.getRam() >= minRam) {
+                filteredComputers[index++] = computer;
+            }
+        }
+
+        return filteredComputers;
+    }
+
+    // Display computer details (for testing)
+    public void displaySpecs() {
+        System.out.println("Brand: " + brand + ", Processor: " + processor + ", RAM: " + ram + "GB");
+    }
+
+    // Main method for testing
+    public static void main(String[] args) {
+        // Create an array of Computer objects
+        Computer[] computers = {
+            new Computer("Dell", "Intel i7", 16),
+            new Computer("HP", "Intel i5", 8),
+            new Computer("Apple", "M1", 32),
+            new Computer("Lenovo", "AMD Ryzen 5", 4)
+        };
+
+        // Get computers with RAM >= 8
+        Computer[] filteredComputers = Computer.getComputersWithRam(computers, 8);
+
+        // Display filtered computers
+        System.out.println("Computers with RAM >= 8:");
+        for (Computer computer : filteredComputers) {
+            computer.displaySpecs();
+        }
+    }
+}
