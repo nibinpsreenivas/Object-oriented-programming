@@ -1,6 +1,6 @@
 #include <iostream>
+#include <cmath>
 #include <string>
-#include <vector>
 using namespace std;
 
 // Base class Account
@@ -126,14 +126,17 @@ public:
 };
 
 // Function to get low balance accounts
-template <typename T>
-vector<T> getLowBalanceAccounts(T accounts[], int size, double threshold) {
-    vector<T> lowBalanceAccounts;
+Account** getLowBalanceAccounts(Account* accounts[], int size, double threshold, int& lowBalanceCount) {
+    // Create a dynamic array to store low balance accounts
+    Account** lowBalanceAccounts = new Account*[size];
+    lowBalanceCount = 0;
+
     for (int i = 0; i < size; i++) {
-        if (accounts[i].getBalance() < threshold) {
-            lowBalanceAccounts.push_back(accounts[i]);
+        if (accounts[i]->getBalance() < threshold) {
+            lowBalanceAccounts[lowBalanceCount++] = accounts[i];
         }
     }
+
     return lowBalanceAccounts;
 }
 
@@ -159,17 +162,18 @@ int main() {
     currentAccount.checkMinimumBalance();
     fdAccount.calculateMaturityAmount();
 
-    cout << "\nSearching for accounts with balance < 3000:\n";
-    vector<Account*> lowBalanceAccounts;
-    for (int i = 0; i < size; i++) {
-        if (accounts[i]->getBalance() < 3000) {
-            lowBalanceAccounts.push_back(accounts[i]);
-        }
+    // Find low balance accounts
+    int lowBalanceCount = 0;
+    Account** lowBalanceAccounts = getLowBalanceAccounts(accounts, size, 3000, lowBalanceCount);
+
+    cout << "\nAccounts with balance less than 3000:\n";
+    for (int i = 0; i < lowBalanceCount; i++) {
+        lowBalanceAccounts[i]->display();
+        cout << endl;
     }
 
-    for (auto account : lowBalanceAccounts) {
-        account->display();
-    }
+    // Clean up dynamic memory
+    delete[] lowBalanceAccounts;
 
     // Search for an account by name
     string searchName = "Alice";
