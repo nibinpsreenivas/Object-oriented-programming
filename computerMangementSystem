@@ -1,72 +1,72 @@
-public class Computer {
-    // Class variables
-    private String brand;
-    private String processor;
-    private int ram;
+#include <iostream>
+#include <string>
+using namespace std;
 
-    // Constructor 1: Initialize brand, processor, and RAM
-    public Computer(String brand, String processor, int ram) {
-        this.brand = brand;
-        this.processor = processor;
-        this.ram = ram;
-    }
+class Computer {
+private:
+    string brand;
+    string processor;
+    int ram;
 
-    // Constructor 2: Initialize brand and processor, default RAM to 8
-    public Computer(String brand, String processor) {
-        this.brand = brand;
-        this.processor = processor;
-        this.ram = 8;
-    }
+public:
+    // Constructor 1: Initializes all fields
+    Computer(string compBrand, string compProcessor, int compRam) 
+        : brand(compBrand), processor(compProcessor), ram(compRam) {}
+
+    // Constructor 2: Initializes brand and processor, sets RAM to 8
+    Computer(string compBrand, string compProcessor) 
+        : brand(compBrand), processor(compProcessor), ram(8) {}
 
     // Getter for RAM
-    public int getRam() {
+    int getRam() const {
         return ram;
     }
 
-    // Method to get computers with RAM greater than or equal to a given size
-    public static Computer[] getComputersWithRam(Computer[] computers, int minRam) {
-        // Count how many computers satisfy the condition
-        int count = 0;
-        for (Computer computer : computers) {
-            if (computer.getRam() >= minRam) {
-                count++;
+    // Method to get an array of computers with RAM >= given size
+    static Computer* getComputersWithRam(Computer computers[], int size, int ramSize, int& resultCount) {
+        // Create a temporary dynamic array to store results
+        Computer* result = new Computer[size];
+        resultCount = 0;
+
+        // Filter computers based on RAM size
+        for (int i = 0; i < size; i++) {
+            if (computers[i].getRam() >= ramSize) {
+                result[resultCount++] = computers[i];
             }
         }
 
-        // Create a new array for the filtered computers
-        Computer[] filteredComputers = new Computer[count];
-        int index = 0;
-        for (Computer computer : computers) {
-            if (computer.getRam() >= minRam) {
-                filteredComputers[index++] = computer;
-            }
-        }
-
-        return filteredComputers;
+        return result;
     }
 
-    // Display computer details (for testing)
-    public void displaySpecs() {
-        System.out.println("Brand: " + brand + ", Processor: " + processor + ", RAM: " + ram + "GB");
+    // Display method for testing
+    void display() const {
+        cout << "Brand: " << brand << ", Processor: " << processor << ", RAM: " << ram << " GB" << endl;
+    }
+};
+
+int main() {
+    // Create an array of Computer objects
+    Computer computers[] = {
+        Computer("Dell", "Intel i5", 16),
+        Computer("HP", "AMD Ryzen 5", 8),
+        Computer("Apple", "M1", 32),
+        Computer("Lenovo", "Intel i3", 4)
+    };
+    int size = sizeof(computers) / sizeof(computers[0]);
+
+    // Find computers with RAM >= 8
+    int resultCount = 0;
+    Computer* filteredComputers = Computer::getComputersWithRam(computers, size, 8, resultCount);
+
+    // Display the filtered computers
+    cout << "Computers with RAM >= 8 GB:\n";
+    for (int i = 0; i < resultCount; i++) {
+        filteredComputers[i].display();
     }
 
-    // Main method for testing
-    public static void main(String[] args) {
-        // Create an array of Computer objects
-        Computer[] computers = {
-            new Computer("Dell", "Intel i7", 16),
-            new Computer("HP", "Intel i5", 8),
-            new Computer("Apple", "M1", 32),
-            new Computer("Lenovo", "AMD Ryzen 5", 4)
-        };
+    // Clean up dynamic memory
+    delete[] filteredComputers;
 
-        // Get computers with RAM >= 8
-        Computer[] filteredComputers = Computer.getComputersWithRam(computers, 8);
-
-        // Display filtered computers
-        System.out.println("Computers with RAM >= 8:");
-        for (Computer computer : filteredComputers) {
-            computer.displaySpecs();
-        }
-    }
+    return 0;
 }
+
