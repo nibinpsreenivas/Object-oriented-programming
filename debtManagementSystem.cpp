@@ -1,37 +1,41 @@
-public class Debt {
-    // Instance variables
-    private double balance;
-    private double interestRate;
+#include <iostream>
+using namespace std;
 
-    // Constructor
-    public Debt(double initialBalance, double initialInterestRate) {
-        this.balance = initialBalance;
-        this.interestRate = initialInterestRate;
-    }
+class Debt {
+private:
+    double balance;
+    double interestRate;
+
+public:
+    // Constructor to initialize balance and interest rate
+    Debt(double initialBalance, double initialInterestRate) 
+        : balance(initialBalance), interestRate(initialInterestRate) {}
 
     // Method to print the current balance
-    public void printBalance() {
-        System.out.printf("Current balance: %.2f%n", balance);
+    void printBalance() const {
+        cout << "Current Balance: " << balance << endl;
     }
 
-    // Method to grow the debt after one year
-    public void waitOneYear() {
-        balance *= interestRate; // Increase balance by multiplying with interest rate
+    // Method to grow the debt for one year
+    void waitOneYear() {
+        balance *= interestRate; // Increase balance by multiplying it by interest rate
     }
+};
 
-    // Main method to demonstrate functionality
-    public static void main(String[] args) {
-        // Create a Debt object
-        Debt myDebt = new Debt(1000.00, 1.05); // Initial balance: 1000, Interest rate: 5%
+int main() {
+    // Create an instance of Debt with initial balance and interest rate
+    Debt myDebt(1000.0, 1.05); // Initial balance: 1000, Interest rate: 5%
 
-        // Print the initial balance
-        myDebt.printBalance();
+    // Print the initial balance
+    myDebt.printBalance();
 
-        // Simulate growth of debt over 3 years
-        for (int i = 1; i <= 3; i++) {
-            myDebt.waitOneYear();
-            System.out.print("After year " + i + ": ");
-            myDebt.printBalance();
-        }
-    }
+    // Simulate waiting for one year and print balance
+    myDebt.waitOneYear();
+    myDebt.printBalance();
+
+    // Simulate waiting for another year and print balance
+    myDebt.waitOneYear();
+    myDebt.printBalance();
+
+    return 0;
 }
